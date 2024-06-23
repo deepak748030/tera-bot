@@ -1,0 +1,73 @@
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm/
+
+# Environment variables file (if you are using dotenv or similar)
+.env
+
+# Logs
+logs/
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+.vscode/
+.idea/
+
+# Built output
+/build/
+/dist/
+
+# Application configuration files (create these if necessary)
+/config/*.json
+/config/*.yaml
+
+# Test coverage output
+/coverage/
+
+# Temp files
+*.tmp
+*.temp
+*.swp
+
+# Compiled binary addons (if any)
+/build/Release
+
+# Include this section if you use TypeScript in your project
+# TypeScript cache
+*.tsbuildinfo
+
+# Include this section if you use Babel
+# Babel cache
+.cache/
+
+# Include this section if you use Yarn in your project
+# Yarn v2
+.yarn/
+
+# Include this section if you use ESLint
+# ESLint cache
+.eslintcache
+
+# Include this section if you use Prettier
+# Prettier cache
+.prettiercache
+
+# Include this section if you use Docker
+# Docker
+.docker/
+
+# Include this section if you use parcel-bundler
+# Parcel
+.cache
+dist
+.cache-loader
+
+# Include this section if you use Next.js
+# Next.js
+/.next/
