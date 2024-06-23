@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./api/index.js"
+    "start": "nodemon ./api/index.js",
+    "set-webhook": "node setWebhook.js"
   },
   "author": "",
   "license": "MIT",
