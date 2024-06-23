@@ -15,35 +15,6 @@ const uploadDir = path.join(__dirname, 'uploads'); // Directory to store uploads
 // Middleware
 app.use(express.json());
 
-// Define routes
-app.get('/api', (req, res) => {
-    res.send('Server started');
-});
-
-// Initialize bot webhook
-const pathss = `/api/telegram-bot`;
-app.post(pathss, (req, res) => {
-    bot.handleUpdate(req.body, res);
-});
-
-// Middleware to handle errors
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Ensure upload directory exists
 fs.mkdir(uploadDir, { recursive: true }).catch(err => {
     console.error('Error creating upload directory:', err);
@@ -60,7 +31,6 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage });
-
 
 // POST endpoint to handle file uploads or TeraBox links
 app.post('/upload', upload.single('file'), async (req, res) => {
@@ -84,7 +54,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         res.status(200).json({ filename });
     } catch (error) {
         console.error('Error uploading file or processing TeraBox link:', error);
-        res.status(500).json({ error: 'Error uploading file or processing TeraBox link' });
+        res.status(400).json({ error: error.message }); // Adjust the status code and error handling
     }
 });
 
@@ -126,13 +96,13 @@ async function saveVideoLocally(buffer) {
     }
 }
 
-// Start Express server
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
-
-// Create a new Telegraf instance with your Telegram bot token
+// Initialize bot webhook
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const webhookPath = '/api/telegram-bot';
+
+app.post(webhookPath, (req, res) => {
+    bot.handleUpdate(req.body, res);
+});
 
 // Start command handler
 bot.start((ctx) => ctx.reply('Welcome! Send me a TeraBox video link to get the video.'));
@@ -159,6 +129,7 @@ bot.on('text', async (ctx) => {
         ctx.reply('Please send a valid TeraBox video link.');
     }
 });
+
 // Function to validate TeraBox link
 function isValidTeraBoxLink(url) {
     return url.includes('terabox.app') || url.includes('freeterabox.com');
@@ -169,4 +140,15 @@ bot.launch().then(() => {
     console.log('Telegraf bot started');
 }).catch((err) => {
     console.error('Error starting Telegraf bot', err);
+});
+
+// Middleware to handle errors
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
+
+// Start Express server
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
 });
